@@ -1,0 +1,41 @@
+---
+import { getLangFromUrl } from "@/i18n/utils";
+
+import { languages } from "@/i18n/ui";
+
+const currentPath = Astro.url.pathname;
+const lang = getLangFromUrl(Astro.url);
+const basePath = currentPath.replace(/^\/(?:[a-z]{2})/, "") || "/";
+
+---
+
+<div class="fixed top-4 right-4 z-50">
+  <div class="relative inline-block text-left">
+    <select
+      id="switcher"
+      class="appearance-none rounded-md border border-gray-300 bg-white px-3 py-2 pr-8 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+    >
+      <!-- <option value={`/en${basePath}`} selected={lang === "en"} >English</option>
+      <option value={`/es${basePath}`} selected={lang === "es"} >Español</option> -->
+
+      {Object.entries(languages).map(([code, name]) => (
+        <option value={`/${code}${basePath}`} selected={lang === code}>
+          {name}
+        </option>
+      ))}
+    </select>
+  </div>
+</div>
+
+<script>
+    const switcher = document.getElementById('switcher');
+
+    if (switcher) {
+
+        switcher.addEventListener('change', (e) => {
+            const target = e.target as HTMLSelectElement;
+            window.location.href = target.value;
+        });
+    }
+
+</script>
